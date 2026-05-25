@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aipm.backend.mapper.ProjectInsightMapper">
+    <resultMap id="BaseResultMap" type="com.aipm.backend.entity.ProjectInsightRecord">
+        <id column="project_id" property="projectId" />
+        <result column="field_directory" property="fieldDirectory" />
+        <result column="repositories_json" property="repositoriesJson" />
+        <result column="documents_json" property="documentsJson" />
+        <result column="changes_json" property="changesJson" />
+        <result column="deliveries_json" property="deliveriesJson" />
+        <result column="middlewares_json" property="middlewaresJson" />
+        <result column="timeline_json" property="timelineJson" />
+        <result column="notes_json" property="notesJson" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <select id="findByProjectId" resultMap="BaseResultMap">
+        SELECT *
+        FROM project_insights
+        WHERE project_id = #{projectId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO project_insights (
+            project_id,
+            field_directory,
+            repositories_json,
+            documents_json,
+            changes_json,
+            deliveries_json,
+            middlewares_json,
+            timeline_json,
+            notes_json
+        )
+        VALUES (
+            #{projectId},
+            #{fieldDirectory},
+            #{repositoriesJson},
+            #{documentsJson},
+            #{changesJson},
+            #{deliveriesJson},
+            #{middlewaresJson},
+            #{timelineJson},
+            #{notesJson}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE project_insights
+        SET field_directory = #{fieldDirectory},
+            repositories_json = #{repositoriesJson},
+            documents_json = #{documentsJson},
+            changes_json = #{changesJson},
+            deliveries_json = #{deliveriesJson},
+            middlewares_json = #{middlewaresJson},
+            timeline_json = #{timelineJson},
+            notes_json = #{notesJson}
+        WHERE project_id = #{projectId}
+    </update>
+
+    <delete id="deleteByProjectId">
+        DELETE FROM project_insights WHERE project_id = #{projectId}
+    </delete>
+</mapper>

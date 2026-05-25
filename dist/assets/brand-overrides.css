@@ -1,0 +1,37 @@
+.fig-sidebar .fig-brand {
+  position: relative;
+  min-height: 66px;
+  padding: 20px 14px 18px 76px !important;
+}
+
+.fig-sidebar .fig-brand::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #fff url("/dist/assets/hanlin-logo.jpg") center / contain no-repeat;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+}
+
+.fig-sidebar .fig-brand h1 {
+  margin: 0 !important;
+  font-size: 0 !important;
+  line-height: 1.25 !important;
+}
+
+.fig-sidebar .fig-brand h1::after {
+  content: "项目履历平台";
+  display: block;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.fig-sidebar .fig-brand p {
+  display: none !important;
+}

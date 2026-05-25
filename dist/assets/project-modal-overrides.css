@@ -1,0 +1,100 @@
+.fig-modal.project .fig-edit-list .edit-row.middleware {
+  display: grid !important;
+  grid-template-columns:
+    minmax(78px, 0.62fr)
+    minmax(118px, 0.9fr)
+    minmax(160px, 1.2fr)
+    minmax(82px, 0.62fr)
+    34px !important;
+  grid-template-areas:
+    "env type host port del"
+    "path path remark upload del" !important;
+  gap: 10px 12px !important;
+  align-items: end !important;
+  padding: 12px 14px !important;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware > label {
+  min-width: 0 !important;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware > label:nth-of-type(1) {
+  grid-area: env;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware > label:nth-of-type(2) {
+  grid-area: type;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware > label:nth-of-type(3) {
+  grid-area: host;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware > label:nth-of-type(4) {
+  grid-area: port;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware > label:nth-of-type(5) {
+  grid-area: path;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware > label:nth-of-type(6) {
+  grid-area: remark;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware > .config-upload-line {
+  grid-area: upload;
+  min-width: 0 !important;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware > .edit-delete {
+  grid-area: del;
+  justify-self: end;
+  align-self: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware input,
+.fig-modal.project .fig-edit-list .edit-row.middleware select {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware .file-picker,
+.fig-modal.project .fig-edit-list .edit-row.middleware .config-upload-control {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.fig-modal.project .fig-edit-list .edit-row.middleware .file-picker-name,
+.fig-modal.project .fig-edit-list .edit-row.middleware .config-file-name {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .fig-modal.project .fig-edit-list .edit-row.middleware {
+    grid-template-columns: 1fr 1fr 34px !important;
+    grid-template-areas:
+      "env type del"
+      "host port del"
+      "path path del"
+      "remark upload del" !important;
+  }
+}
+
+.project-notes-section .records-title p {
+  font-size: 0 !important;
+  line-height: 1.55 !important;
+}
+
+.project-notes-section .records-title p::after {
+  content: "记录沟通过程、数据申请、第三方接口、数据来源、支撑人员和现场问题处理过程，沉淀申请方式、对接人、接口文档、关键结论和遗留事项，便于后续接手追溯。";
+  font-size: 13px;
+  color: #667085;
+}

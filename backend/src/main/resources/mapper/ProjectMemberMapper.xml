@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aipm.backend.mapper.ProjectMemberMapper">
+    <resultMap id="BaseResultMap" type="com.aipm.backend.entity.ProjectMember">
+        <id column="id" property="id" />
+        <result column="project_id" property="projectId" />
+        <result column="user_id" property="userId" />
+        <result column="role" property="role" />
+        <result column="employee_no" property="employeeNo" />
+        <result column="real_name" property="realName" />
+        <result column="phone" property="phone" />
+        <result column="joined_at" property="joinedAt" />
+    </resultMap>
+
+    <select id="findByProjectId" resultMap="BaseResultMap">
+        SELECT pm.*, u.employee_no, u.real_name, u.phone
+        FROM project_members pm
+        JOIN users u ON pm.user_id = u.id
+        WHERE pm.project_id = #{projectId}
+        ORDER BY pm.joined_at DESC
+    </select>
+
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT pm.*, u.employee_no, u.real_name, u.phone
+        FROM project_members pm
+        JOIN users u ON pm.user_id = u.id
+        WHERE pm.user_id = #{userId}
+        ORDER BY pm.joined_at DESC
+    </select>
+
+    <insert id="insert">
+        INSERT INTO project_members (project_id, user_id, role, joined_at)
+        VALUES (#{projectId}, #{userId}, #{role}, COALESCE(#{joinedAt}, CURRENT_TIMESTAMP))
+    </insert>
+
+    <delete id="deleteByProjectId">
+        DELETE FROM project_members WHERE project_id = #{projectId}
+    </delete>
+</mapper>

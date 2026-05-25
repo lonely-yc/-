@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aipm.backend.mapper.ProjectMapper">
+    <resultMap id="BaseResultMap" type="com.aipm.backend.entity.Project">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="manager" property="manager" />
+        <result column="description" property="description" />
+        <result column="customer" property="customer" />
+        <result column="start_date" property="startDate" />
+        <result column="end_date" property="endDate" />
+        <result column="status" property="status" />
+        <result column="created_by" property="createdBy" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM projects ORDER BY created_at DESC
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT * FROM projects WHERE id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO projects (name, code, manager, description, customer, start_date, end_date, status, created_by)
+        VALUES (#{name}, #{code}, #{manager}, #{description}, #{customer}, #{startDate}, #{endDate}, #{status}, #{createdBy})
+    </insert>
+
+    <update id="update">
+        UPDATE projects
+        SET name = #{name},
+            code = #{code},
+            manager = #{manager},
+            description = #{description},
+            customer = #{customer},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM projects WHERE id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aipm.backend.mapper.OperationLogMapper">
+    <resultMap id="BaseResultMap" type="com.aipm.backend.entity.OperationLog">
+        <id column="id" property="id" />
+        <result column="project_id" property="projectId" />
+        <result column="project_name" property="projectName" />
+        <result column="operator" property="operator" />
+        <result column="action_type" property="actionType" />
+        <result column="action_title" property="actionTitle" />
+        <result column="content" property="content" />
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <select id="findRecent" resultMap="BaseResultMap">
+        SELECT *
+        FROM operation_logs
+        WHERE action_type != 'insight_update'
+        ORDER BY created_at DESC, id DESC
+        LIMIT #{limit}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO operation_logs (project_id, project_name, operator, action_type, action_title, content)
+        VALUES (#{projectId}, #{projectName}, #{operator}, #{actionType}, #{actionTitle}, #{content})
+    </insert>
+</mapper>

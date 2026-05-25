@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aipm.backend.mapper.PersonProjectHandoverMapper">
+    <resultMap id="BaseResultMap" type="com.aipm.backend.entity.PersonProjectHandoverRecord">
+        <id column="id" property="id" />
+        <result column="person_id" property="personId" />
+        <result column="project_id" property="projectId" />
+        <result column="handover_to_user_id" property="handoverToUserId" />
+        <result column="handover_to_name" property="handoverToName" />
+        <result column="handover_status" property="handoverStatus" />
+        <result column="handover_remark" property="handoverRemark" />
+        <result column="handover_at" property="handoverAt" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <select id="findByPersonId" resultMap="BaseResultMap">
+        SELECT *
+        FROM person_project_handovers
+        WHERE person_id = #{personId}
+        ORDER BY updated_at DESC, handover_at DESC
+    </select>
+
+    <select id="findOne" resultMap="BaseResultMap">
+        SELECT *
+        FROM person_project_handovers
+        WHERE person_id = #{personId}
+          AND project_id = #{projectId}
+        LIMIT 1
+    </select>
+
+    <insert id="upsert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO person_project_handovers (
+            person_id,
+            project_id,
+            handover_to_user_id,
+            handover_to_name,
+            handover_status,
+            handover_remark,
+            handover_at
+        )
+        VALUES (
+            #{personId},
+            #{projectId},
+            #{handoverToUserId},
+            #{handoverToName},
+            #{handoverStatus},
+            #{handoverRemark},
+            COALESCE(#{handoverAt}, CURRENT_TIMESTAMP)
+        )
+        ON DUPLICATE KEY UPDATE
+            handover_to_user_id = VALUES(handover_to_user_id),
+            handover_to_name = VALUES(handover_to_name),
+            handover_status = VALUES(handover_status),
+            handover_remark = VALUES(handover_remark),
+            handover_at = VALUES(handover_at),
+            updated_at = CURRENT_TIMESTAMP
+    </insert>
+</mapper>

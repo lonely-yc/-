@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+
+# Frontend build and runtime noise
+.vite/
+*.local
+
+# Backend build/runtime output
+backend/target/
+backend/uploads/
+backend/*.log
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE/editor
+.idea/
+.vscode/
+*.iml
+
+# OS and Office temporary files
+.DS_Store
+Thumbs.db
+~$*
+
+# Generated packages and heavy archives
+*.zip
+*.jar
+*.mp4
+
+# Generated media/output folders
+outputs/
+pet-output/
+tools/ffmpeg/
+minimax/
+资料/AI赋能比赛-项目履历平台/
+资料/项目履历平台-客户演示动画/renders/
+
+# Local environment files
+.env
+.env.*
+!.env.example

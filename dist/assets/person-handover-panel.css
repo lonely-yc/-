@@ -1,0 +1,396 @@
+.person-handover-panel {
+  margin-top: 16px;
+  border: 1px solid #dfe7eb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  padding: 16px;
+}
+
+.person-handover-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.person-handover-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #0f172a;
+}
+
+.person-handover-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.handover-person-pill {
+  border-radius: 999px;
+  background: #e8f4f1;
+  color: #12635c;
+  padding: 6px 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.handover-empty {
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #64748b;
+  padding: 24px;
+  text-align: center;
+  background: #f8fafc;
+}
+
+.handover-empty.compact {
+  padding: 14px;
+  text-align: left;
+}
+
+.person-handover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.person-handover-card {
+  position: relative;
+  min-height: 132px;
+  border: 1px solid #dfe7eb;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.07);
+  padding: 14px 14px 12px;
+}
+
+.handover-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.handover-card-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.35;
+  color: #0f172a;
+}
+
+.handover-card-meta {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.handover-state-dot {
+  position: relative;
+  width: 22px;
+  height: 14px;
+  flex: 0 0 auto;
+}
+
+.handover-state-dot::before,
+.handover-state-dot::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #22c55e;
+}
+
+.handover-state-dot::before {
+  right: 10px;
+}
+
+.handover-state-dot::after {
+  right: 0;
+}
+
+.handover-quick-lines {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 14px;
+  margin-top: 12px;
+}
+
+.handover-quick-lines div {
+  min-width: 0;
+}
+
+.handover-quick-lines span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.handover-quick-lines b {
+  display: block;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.handover-card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #eef2f7;
+}
+
+.handover-mini-summary {
+  display: grid;
+  gap: 2px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.handover-card-actions,
+.handover-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.handover-card-actions button,
+.handover-modal-actions button {
+  height: 32px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  color: #155e57;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.handover-card-actions button.primary,
+.handover-modal-actions button.primary {
+  border-color: #12635c;
+  background: #12635c;
+  color: #fff;
+}
+
+.handover-selected-row {
+  background: #eefaf7 !important;
+  box-shadow: inset 3px 0 0 #12635c;
+}
+
+.handover-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.handover-modal {
+  width: min(760px, calc(100vw - 36px));
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+}
+
+.handover-modal header,
+.handover-modal footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.handover-modal header p {
+  margin: 6px 0 0;
+  color: #64748b;
+}
+
+.handover-modal footer {
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 0;
+  justify-content: flex-end;
+}
+
+.handover-modal h3 {
+  margin: 0;
+}
+
+.handover-modal header [data-close] {
+  border: 0;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.handover-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px;
+}
+
+.handover-form label {
+  display: grid;
+  gap: 6px;
+  color: #475569;
+  font-size: 14px;
+}
+
+.handover-form label.wide {
+  grid-column: 1 / -1;
+}
+
+.handover-form input,
+.handover-form select,
+.handover-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  min-height: 38px;
+  padding: 8px 10px;
+  font: inherit;
+}
+
+.handover-form textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.handover-detail-body {
+  padding: 18px;
+}
+
+.handover-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.handover-detail-grid article {
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  background: #f8fafc;
+  padding: 10px;
+}
+
+.handover-detail-grid span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.handover-detail-grid strong {
+  display: block;
+  margin-top: 5px;
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.handover-detail-section {
+  margin-top: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.handover-detail-section h4 {
+  margin: 0 0 8px;
+  color: #0f172a;
+}
+
+.handover-detail-section p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.handover-doc-list {
+  display: grid;
+  gap: 8px;
+}
+
+.handover-doc-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-radius: 7px;
+  background: #f8fafc;
+  padding: 10px 12px;
+}
+
+.handover-doc-item strong {
+  color: #0f172a;
+}
+
+.handover-doc-item p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.handover-doc-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.handover-doc-actions span {
+  flex: 0 0 auto;
+  color: #12635c;
+  font-size: 12px;
+}
+
+.handover-doc-actions a,
+.handover-doc-actions button {
+  border: 0;
+  background: transparent;
+  color: #12635c;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  padding: 0;
+  text-decoration: none;
+}
+
+.handover-doc-actions button {
+  color: #ef4444;
+}
+
+@media (max-width: 720px) {
+  .handover-form,
+  .handover-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .person-handover-header,
+  .handover-card-footer {
+    display: block;
+  }
+
+  .handover-card-actions {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+}

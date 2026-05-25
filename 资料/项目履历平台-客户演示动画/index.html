@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>项目履历平台客户演示动画</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: #e9f0ee;
+      color: #122035;
+      font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    #project-history-demo {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      background: #f4f7f6;
+      overflow: hidden;
+      transform-origin: center center;
+      box-shadow: 0 30px 90px rgba(17, 94, 89, 0.22);
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      background: #f4f7f6;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    .scene-content {
+      position: relative;
+      z-index: 4;
+      width: 100%;
+      height: 100%;
+      padding: 74px 92px;
+    }
+
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.32;
+      background-image:
+        linear-gradient(rgba(15, 118, 110, 0.09) 1px, rgba(15, 118, 110, 0) 1px),
+        linear-gradient(90deg, rgba(15, 118, 110, 0.08) 1px, rgba(15, 118, 110, 0) 1px);
+      background-size: 80px 80px;
+    }
+
+    .soft-glow {
+      position: absolute;
+      width: 560px;
+      height: 560px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(15, 118, 110, 0.18), rgba(15, 118, 110, 0));
+      filter: blur(8px);
+    }
+
+    .glow-a {
+      top: -160px;
+      right: -110px;
+    }
+
+    .glow-b {
+      left: -160px;
+      bottom: -180px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.14), rgba(37, 99, 235, 0));
+    }
+
+    .transition-panel {
+      position: absolute;
+      inset: 0;
+      z-index: 40;
+      background: #115e59;
+      pointer-events: none;
+    }
+
+    .transition-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.16)),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0 1px, rgba(255, 255, 255, 0) 1px 68px);
+    }
+
+    .kicker {
+      color: #0f766e;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      max-width: 1120px;
+      font-size: 106px;
+      line-height: 1.08;
+      font-weight: 900;
+      margin: 0;
+    }
+
+    .hero-title span,
+    .accent {
+      color: #0f766e;
+    }
+
+    .hero-copy {
+      max-width: 920px;
+      margin-top: 30px;
+      color: #5f6f82;
+      font-size: 32px;
+      line-height: 1.62;
+    }
+
+    .topbar {
+      position: absolute;
+      left: 92px;
+      right: 92px;
+      top: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #5f6f82;
+      font-size: 22px;
+      z-index: 8;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #122035;
+      font-weight: 900;
+      font-size: 30px;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      background: #0f766e;
+      font-family: Consolas, monospace;
+      font-weight: 900;
+    }
+
+    .mock-shell {
+      position: absolute;
+      right: 90px;
+      bottom: 82px;
+      width: 820px;
+      height: 560px;
+      border-radius: 18px;
+      background: #fbfdfc;
+      border: 1px solid #dbe5e2;
+      box-shadow: 0 28px 70px rgba(18, 32, 53, 0.13);
+      overflow: hidden;
+    }
+
+    .mock-sidebar {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 154px;
+      background: #115e59;
+    }
+
+    .mock-main {
+      position: absolute;
+      left: 154px;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      padding: 30px;
+    }
+
+    .mini-nav {
+      width: 104px;
+      height: 14px;
+      margin: 34px auto;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.36);
+    }
+
+    .mini-row {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .mini-card {
+      flex: 1;
+      min-height: 110px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #dbe5e2;
+      padding: 18px;
+    }
+
+    .mini-card strong {
+      display: block;
+      font-size: 32px;
+      font-family: Consolas, monospace;
+    }
+
+    .mini-card span {
+      display: block;
+      margin-top: 8px;
+      color: #5f6f82;
+      font-size: 18px;
+    }
+
+    .data-table {
+      margin-top: 22px;
+      border-radius: 14px;
+      border: 1px solid #dbe5e2;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .table-line {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 0.8fr 0.8fr;
+      gap: 18px;
+      align-items: center;
+      min-height: 58px;
+      padding: 0 22px;
+      border-bottom: 1px solid #e7eeeb;
+      font-size: 18px;
+    }
+
+    .table-line:last-child {
+      border-bottom: 0;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      min-height: 30px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #116147;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .pain-grid,
+    .dashboard-grid,
+    .handover-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .pain-grid {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 56px;
+    }
+
+    .pain-card,
+    .metric-card,
+    .board-card,
+    .handover-card,
+    .config-card {
+      background: #fbfdfc;
+      border: 1px solid #dbe5e2;
+      border-radius: 16px;
+      box-shadow: 0 18px 48px rgba(18, 32, 53, 0.08);
+    }
+
+    .pain-card {
+      min-height: 300px;
+      padding: 34px;
+    }
+
+    .pain-number {
+      color: #0f766e;
+      font-family: Consolas, monospace;
+      font-size: 54px;
+      font-weight: 900;
+    }
+
+    .pain-card h3,
+    .board-card h3,
+    .handover-card h3,
+    .config-card h3 {
+      margin: 22px 0 12px;
+      font-size: 32px;
+    }
+
+    .pain-card p,
+    .board-card p,
+    .handover-card p,
+    .config-card p {
+      margin: 0;
+      color: #5f6f82;
+      font-size: 23px;
+      line-height: 1.55;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 44px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .dashboard-grid {
+      grid-template-columns: repeat(4, 1fr);
+      margin: 28px 0 26px;
+    }
+
+    .metric-card {
+      min-height: 140px;
+      padding: 24px;
+    }
+
+    .metric-card b {
+      display: block;
+      font-family: Consolas, monospace;
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+
+    .metric-card span {
+      color: #5f6f82;
+      font-size: 20px;
+    }
+
+    .board-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .board-card {
+      min-height: 210px;
+      padding: 26px;
+      position: relative;
+    }
+
+    .risk-high {
+      border-color: rgba(239, 68, 68, 0.35);
+      background: #fffafa;
+    }
+
+    .rank {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #0f766e;
+      color: #ffffff;
+      font-family: Consolas, monospace;
+      font-weight: 900;
+    }
+
+    .timeline-wrap {
+      position: relative;
+      width: 1160px;
+      margin: 34px auto 0;
+      padding: 18px 0;
+    }
+
+    .timeline-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 260px;
+      width: 3px;
+      background: #dbe5e2;
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 220px 54px 1fr;
+      gap: 26px;
+      align-items: stretch;
+      margin: 20px 0;
+    }
+
+    .timeline-date {
+      padding-top: 20px;
+      color: #5f6f82;
+      font-family: Consolas, monospace;
+      font-size: 24px;
+      text-align: right;
+    }
+
+    .timeline-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      margin-top: 22px;
+      border: 6px solid #e7f4f1;
+      box-shadow: 0 0 0 2px currentColor;
+      color: #0f766e;
+      background: currentColor;
+      z-index: 2;
+    }
+
+    .timeline-dot.requirement {
+      color: #f59e0b;
+    }
+
+    .timeline-dot.delivery {
+      color: #2563eb;
+    }
+
+    .timeline-dot.member {
+      color: #16a34a;
+    }
+
+    .timeline-dot.middleware {
+      color: #7c3aed;
+    }
+
+    .timeline-card {
+      background: #fbfdfc;
+      border: 1px solid #dbe5e2;
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 14px 36px rgba(18, 32, 53, 0.07);
+    }
+
+    .timeline-card h3 {
+      margin: 0 0 8px;
+      font-size: 25px;
+    }
+
+    .timeline-card p {
+      margin: 0;
+      color: #5f6f82;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .relation-area {
+      display: grid;
+      grid-template-columns: 1fr 190px 1fr;
+      align-items: center;
+      gap: 34px;
+      margin-top: 48px;
+    }
+
+    .relation-stack {
+      display: grid;
+      gap: 20px;
+    }
+
+    .relation-card {
+      min-height: 142px;
+      padding: 24px 26px;
+      border-radius: 16px;
+      background: #fbfdfc;
+      border: 1px solid #dbe5e2;
+      box-shadow: 0 14px 40px rgba(18, 32, 53, 0.08);
+    }
+
+    .relation-card h3 {
+      margin: 0 0 10px;
+      font-size: 28px;
+    }
+
+    .relation-card p {
+      margin: 0;
+      color: #5f6f82;
+      font-size: 21px;
+      line-height: 1.5;
+    }
+
+    .arrow-link {
+      display: grid;
+      place-items: center;
+      min-height: 360px;
+      color: #0f766e;
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .arrow-link svg {
+      width: 170px;
+      overflow: visible;
+    }
+
+    .config-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .config-card {
+      min-height: 360px;
+      padding: 30px;
+    }
+
+    .code-block {
+      margin-top: 22px;
+      min-height: 112px;
+      padding: 20px;
+      border-radius: 12px;
+      background: #101827;
+      color: #dbeafe;
+      font-family: Consolas, monospace;
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .handover-grid {
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 48px;
+    }
+
+    .handover-card {
+      min-height: 246px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .dot-pair {
+      position: absolute;
+      right: 22px;
+      top: 20px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot-pair i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid #e7eeeb;
+    }
+
+    .meta-grid span {
+      color: #5f6f82;
+      font-size: 17px;
+    }
+
+    .meta-grid b {
+      display: block;
+      margin-top: 4px;
+      font-size: 22px;
+    }
+
+    .closing {
+      display: grid;
+      height: 100%;
+      place-items: center;
+      text-align: center;
+    }
+
+    .closing h2 {
+      margin: 0;
+      max-width: 1200px;
+      font-size: 94px;
+      line-height: 1.14;
+      font-weight: 900;
+    }
+
+    .closing p {
+      max-width: 1000px;
+      margin: 32px auto 0;
+      color: #5f6f82;
+      font-size: 31px;
+      line-height: 1.58;
+    }
+
+    .final-strip {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 48px;
+    }
+
+    .final-strip span {
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: #e6f3f1;
+      color: #0f766e;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .play-hint {
+      position: absolute;
+      left: 32px;
+      bottom: 24px;
+      z-index: 60;
+      color: rgba(95, 111, 130, 0.82);
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="project-history-demo" data-composition-id="project-history-demo" data-start="0" data-duration="48" data-track-index="0" data-width="1920" data-height="1080">
+    <div class="grid-bg"></div>
+    <div class="soft-glow glow-a"></div>
+    <div class="soft-glow glow-b"></div>
+
+    <section class="scene" id="scene-1">
+      <div class="scene-content">
+        <div class="topbar">
+          <div class="brand"><span class="brand-mark">履</span>项目履历平台</div>
+          <div>客户演示版 · 项目追溯与交接沉淀</div>
+        </div>
+        <div style="padding-top: 210px;">
+          <div class="kicker">PROJECT HISTORY PLATFORM</div>
+          <h1 class="hero-title">让项目过程<br><span>可追溯、可交接、可复盘</span></h1>
+          <p class="hero-copy">把需求变更、发包部署、中间件配置、人员交接和过程备注统一沉淀，帮助新同事快速接手，也帮助项目经理看清风险。</p>
+        </div>
+        <div class="mock-shell">
+          <div class="mock-sidebar">
+            <div class="mini-nav"></div>
+            <div class="mini-nav"></div>
+            <div class="mini-nav"></div>
+          </div>
+          <div class="mock-main">
+            <div class="mini-row">
+              <div class="mini-card"><strong>3</strong><span>项目总数</span></div>
+              <div class="mini-card"><strong>7</strong><span>参与人员</span></div>
+              <div class="mini-card"><strong>5</strong><span>需求变更</span></div>
+            </div>
+            <div class="data-table">
+              <div class="table-line"><b>停电智能体</b><span>POWER-AI</span><span class="status-pill">进行中</span><span>4 变更</span></div>
+              <div class="table-line"><b>巡检移动端升级</b><span>MOBILE-OPS</span><span class="status-pill">规划中</span><span>1 中间件</span></div>
+              <div class="table-line"><b>园区运营平台</b><span>PARK-HUB</span><span class="status-pill">已完成</span><span>已归档</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-2">
+      <div class="scene-content">
+        <div class="kicker">为什么要做</div>
+        <h2 class="hero-title" style="font-size: 82px;">项目交接最怕的不是资料少，<br><span>而是过程断了。</span></h2>
+        <div class="pain-grid">
+          <article class="pain-card">
+            <div class="pain-number">01</div>
+            <h3>需求散落</h3>
+            <p>客户要求、变更原因、前后端改动分散在群消息和个人文档里，后来的人很难判断为什么改。</p>
+          </article>
+          <article class="pain-card">
+            <div class="pain-number">02</div>
+            <h3>发包难追</h3>
+            <p>版本号、部署环境、解决问题和回退说明缺少关联，现场出问题时只能靠人回忆。</p>
+          </article>
+          <article class="pain-card">
+            <div class="pain-number">03</div>
+            <h3>交接靠口头</h3>
+            <p>老同事离职或新同事入职时，个人经验、接口支撑人、数据申请方式没有形成项目资产。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-3">
+      <div class="scene-content">
+        <div class="kicker">首页总览</div>
+        <h2 class="hero-title" style="font-size: 78px;">项目经理先看全局，<br><span>风险项目排在前面。</span></h2>
+        <div class="dashboard-grid">
+          <div class="metric-card"><b>3</b><span>项目总数</span></div>
+          <div class="metric-card"><b>7</b><span>参与人员</span></div>
+          <div class="metric-card"><b>5</b><span>需求变更</span></div>
+          <div class="metric-card"><b>6</b><span>发包记录</span></div>
+        </div>
+        <div class="board-row">
+          <article class="board-card risk-high">
+            <div class="rank">1</div>
+            <h3>停电智能体</h3>
+            <p>需求和发包都较频繁，建议项目经理复核范围。</p>
+          </article>
+          <article class="board-card">
+            <div class="rank">2</div>
+            <h3>巡检移动端升级</h3>
+            <p>尚未登记中间件配置，部署信息不完整。</p>
+          </article>
+          <article class="board-card">
+            <div class="rank">3</div>
+            <h3>园区运营平台</h3>
+            <p>已完成交付，公共资料和人员资料可归档。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-4">
+      <div class="scene-content">
+        <div class="kicker">项目履历</div>
+        <h2 class="hero-title" style="font-size: 74px;">按业务发生时间阅读，<br><span>像翻项目档案一样接手。</span></h2>
+        <div class="timeline-wrap">
+          <div class="timeline-line"></div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026-05-21</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-card"><h3>项目创建 · 李楠</h3><p>确定客户、负责人、初始范围和第一版交付窗口。</p></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026-05-24</div>
+            <div class="timeline-dot requirement"></div>
+            <div class="timeline-card"><h3>需求变更 · 国网运维中心</h3><p>新增停电原因回填和 AI 研判复核入口。</p></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026-05-26</div>
+            <div class="timeline-dot delivery"></div>
+            <div class="timeline-card"><h3>联调发包 · 陈越</h3><p>发包 v1.3.0，完成现场首轮接口联调。</p></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026-05-30</div>
+            <div class="timeline-dot delivery"></div>
+            <div class="timeline-card"><h3>稳定版发包 · 陈越</h3><p>发包 v1.4.2，交付需求变更后的稳定版本。</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-5">
+      <div class="scene-content">
+        <div class="kicker">追溯关系</div>
+        <h2 class="hero-title" style="font-size: 78px;">发包不再是一条孤立记录，<br><span>它能反查解决了哪些需求。</span></h2>
+        <div class="relation-area">
+          <div class="relation-stack">
+            <article class="relation-card"><h3>需求：停电原因回填</h3><p>客户现场提出，后端新增 cause_review 表与复核接口。</p></article>
+            <article class="relation-card"><h3>需求：弱网离线缓存</h3><p>移动端增加本地缓存草稿和同步状态提示。</p></article>
+          </div>
+          <div class="arrow-link">
+            <svg viewBox="0 0 220 220" aria-hidden="true">
+              <path d="M28 82 C82 12, 146 28, 192 92" fill="none" stroke="#0f766e" stroke-width="10" stroke-linecap="round" />
+              <path d="M176 64 L202 98 L160 100" fill="none" stroke="#0f766e" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M192 138 C136 204, 72 190, 28 128" fill="none" stroke="#2563eb" stroke-width="10" stroke-linecap="round" />
+              <path d="M44 156 L18 122 L60 120" fill="none" stroke="#2563eb" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="relation-stack">
+            <article class="relation-card"><h3>发包：v1.3.0 联调包</h3><p>解决首轮接口联调，包含 Redis 初始化脚本与 Nginx 代理配置。</p></article>
+            <article class="relation-card"><h3>发包：v1.4.2 稳定包</h3><p>修复前端状态展示，补充部署变更单和回退说明。</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-6">
+      <div class="scene-content">
+        <div class="kicker">资料与环境</div>
+        <h2 class="hero-title" style="font-size: 76px;">公共资料、Git 地址、<br><span>中间件配置都留在项目里。</span></h2>
+        <div class="config-layout">
+          <article class="config-card">
+            <h3>MySQL · 测试</h3>
+            <p>10.10.20.15:3306<br>配置文件：mysql.cnf</p>
+            <div class="code-block">spring.datasource.url=jdbc:mysql://10.10.20.15:3306/power_ai</div>
+          </article>
+          <article class="config-card">
+            <h3>Redis · 测试</h3>
+            <p>10.10.20.18:6379<br>说明：缓存与任务锁</p>
+            <div class="code-block">bind 10.10.20.18<br>port 6379</div>
+          </article>
+          <article class="config-card">
+            <h3>Nginx · 正式</h3>
+            <p>172.16.8.21:80<br>说明：前端代理</p>
+            <div class="code-block">location /api {<br>&nbsp;&nbsp;proxy_pass http://127.0.0.1:18081;<br>}</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-7">
+      <div class="scene-content">
+        <div class="kicker">人员交接</div>
+        <h2 class="hero-title" style="font-size: 76px;">点击人员，就能看到他参与过的项目，<br><span>以及个人理解资料。</span></h2>
+        <div class="handover-grid">
+          <article class="handover-card">
+            <div class="dot-pair"><i></i><i></i></div>
+            <h3>停电智能体</h3>
+            <p>POWER-AI-2026-01 · 鲁软</p>
+            <div class="meta-grid"><div><span>当前职责</span><b>实施</b></div><div><span>加入时间</span><b>05-23</b></div><div><span>个人资料</span><b>2 份</b></div><div><span>交接状态</span><b>交接中</b></div></div>
+          </article>
+          <article class="handover-card">
+            <div class="dot-pair"><i></i><i></i></div>
+            <h3>巡检移动端升级</h3>
+            <p>MOBILE-OPS-2026-02 · 华东能源</p>
+            <div class="meta-grid"><div><span>当前职责</span><b>实施</b></div><div><span>加入时间</span><b>05-04</b></div><div><span>个人资料</span><b>1 份</b></div><div><span>交接状态</span><b>需补充</b></div></div>
+          </article>
+          <article class="handover-card">
+            <div class="dot-pair"><i></i><i></i></div>
+            <h3>接口支撑记录</h3>
+            <p>记录找谁对接、接口文档、数据来源和申请方式。</p>
+            <div class="meta-grid"><div><span>支撑人</span><b>张工</b></div><div><span>资料</span><b>接口文档</b></div><div><span>状态</span><b>已确认</b></div><div><span>备注</span><b>可追溯</b></div></div>
+          </article>
+          <article class="handover-card">
+            <div class="dot-pair"><i></i><i></i></div>
+            <h3>现场问题记录</h3>
+            <p>沉淀数据申请、第三方系统、现场问题和处理路径。</p>
+            <div class="meta-grid"><div><span>问题数</span><b>3 条</b></div><div><span>关闭</span><b>2 条</b></div><div><span>图片</span><b>申请单</b></div><div><span>交接</span><b>已同步</b></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-8">
+      <div class="scene-content closing">
+        <div>
+          <div class="kicker">最终价值</div>
+          <h2>项目履历平台<br><span class="accent">把经验从“人脑”沉淀到“系统”</span></h2>
+          <p>项目经理看风险，新同事看履历，实施人员看配置，开发人员看需求与发包关联。项目交接从口头描述变成可追溯资产。</p>
+          <div class="final-strip">
+            <span>过程可追溯</span>
+            <span>资料可沉淀</span>
+            <span>问题可定位</span>
+            <span>交接可延续</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="transition-panel"></div>
+    <div class="play-hint">本地演示：空格暂停/继续，R 重新播放</div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+
+    (function () {
+      const root = document.querySelector("#project-history-demo");
+      const tl = gsap.timeline({ paused: true });
+      const scenes = ["#scene-1", "#scene-2", "#scene-3", "#scene-4", "#scene-5", "#scene-6", "#scene-7", "#scene-8"];
+      const starts = [0, 6, 12, 18, 24, 30, 36, 42];
+
+      function fitComposition() {
+        const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+        root.style.transform = "scale(" + scale + ")";
+      }
+
+      function ambient() {
+        gsap.to(".glow-a", { scale: 1.12, x: -30, y: 18, duration: 5.4, repeat: 7, yoyo: true, ease: "sine.inOut" });
+        gsap.to(".glow-b", { scale: 1.08, x: 28, y: -22, duration: 6.2, repeat: 6, yoyo: true, ease: "sine.inOut" });
+        gsap.to(".grid-bg", { backgroundPosition: "80px 80px", duration: 18, repeat: 1, ease: "none" });
+      }
+
+      function animate(selector, vars, at) {
+        const targets = document.querySelectorAll(selector);
+        if (targets.length > 0) {
+          tl.from(targets, vars, at);
+        }
+      }
+
+      function transitionTo(nextScene, at) {
+        tl.to(".transition-panel", { xPercent: 104, duration: 0.44, ease: "power2.inOut" }, at);
+        tl.set(scenes, { opacity: 0 }, at + 0.22);
+        tl.set(nextScene, { opacity: 1 }, at + 0.22);
+        tl.set(".transition-panel", { xPercent: -104 }, at + 0.46);
+      }
+
+      function enter(selector, at) {
+        animate(selector + " .kicker", { y: 24, opacity: 0, duration: 0.42, ease: "power2.out" }, at);
+        animate(selector + " .hero-title, " + selector + " .closing h2", { y: 42, opacity: 0, scale: 0.985, duration: 0.58, ease: "power3.out" }, at + 0.12);
+        animate(selector + " .hero-copy, " + selector + " .closing p", { y: 26, opacity: 0, duration: 0.46, ease: "power2.out" }, at + 0.38);
+        animate(selector + " .pain-card, " + selector + " .metric-card, " + selector + " .board-card, " + selector + " .timeline-item, " + selector + " .relation-card, " + selector + " .config-card, " + selector + " .handover-card, " + selector + " .final-strip span", {
+          y: 34,
+          opacity: 0,
+          scale: 0.985,
+          duration: 0.45,
+          stagger: 0.07,
+          ease: "power2.out"
+        }, at + 0.62);
+      }
+
+      tl.set(scenes, { opacity: 0 }, 0);
+      tl.set("#scene-1", { opacity: 1 }, 0);
+      tl.set(".transition-panel", { xPercent: -104 }, 0);
+      animate("#scene-1 .topbar", { y: -24, opacity: 0, duration: 0.5, ease: "power2.out" }, 0.2);
+      enter("#scene-1", 0.42);
+      animate("#scene-1 .mock-shell", { y: 46, opacity: 0, scale: 0.97, duration: 0.7, ease: "power3.out" }, 1.2);
+
+      for (let i = 1; i < scenes.length; i += 1) {
+        transitionTo(scenes[i], starts[i] - 0.46);
+        enter(scenes[i], starts[i] + 0.08);
+      }
+
+      tl.to("#scene-8 .closing", { opacity: 0, y: -18, duration: 0.8, ease: "sine.inOut" }, 47.1);
+
+      window.__timelines["project-history-demo"] = tl;
+      ambient();
+      fitComposition();
+      window.addEventListener("resize", fitComposition);
+
+      let isPlaying = true;
+      tl.play(0);
+      window.addEventListener("keydown", function (event) {
+        if (event.code === "Space") {
+          event.preventDefault();
+          isPlaying = !isPlaying;
+          if (isPlaying) {
+            tl.play();
+          } else {
+            tl.pause();
+          }
+        }
+        if (event.key.toLowerCase() === "r") {
+          isPlaying = true;
+          tl.play(0);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

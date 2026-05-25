@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aipm.backend.mapper.ToolDesensitizeRecordMapper">
+    <resultMap id="BaseResultMap" type="com.aipm.backend.entity.ToolDesensitizeRecord">
+        <id column="id" property="id" />
+        <result column="original_file_name" property="originalFileName" />
+        <result column="original_stored_path" property="originalStoredPath" />
+        <result column="masked_file_name" property="maskedFileName" />
+        <result column="masked_stored_path" property="maskedStoredPath" />
+        <result column="match_count" property="matchCount" />
+        <result column="rule_summary" property="ruleSummary" />
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT *
+        FROM tool_desensitize_records
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tool_desensitize_records (
+            original_file_name,
+            original_stored_path,
+            masked_file_name,
+            masked_stored_path,
+            match_count,
+            rule_summary
+        )
+        VALUES (
+            #{originalFileName},
+            #{originalStoredPath},
+            #{maskedFileName},
+            #{maskedStoredPath},
+            #{matchCount},
+            #{ruleSummary}
+        )
+    </insert>
+</mapper>
