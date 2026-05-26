@@ -45,7 +45,8 @@ const displayStatus = (value) => STATUS_TEXT[value] || value || "未交接";
 async function requestJson(url, options) {
   const response = await fetch(url, options);
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  const body = await response.json();
+  const text = await response.text();
+  const body = text ? JSON.parse(text) : {};
   return body.data ?? body;
 }
 
@@ -327,13 +328,25 @@ async function submitHandover(modal, projectId) {
 
 async function submitDocument(modal, projectId) {
   const form = modal.querySelector(".handover-form");
+  const fileInput = form.querySelector('input[name="file"]');
+  if (!fileInput?.files?.length) {
+    fileInput?.focus();
+    alert("请选择要上传的个人项目资料");
+    return;
+  }
   const data = new FormData(form);
-  await requestJson(`/api/people/${state.selectedPerson.id}/projects/${projectId}/handover-documents`, {
+  const response = await fetch(`/api/people/${state.selectedPerson.id}/projects/${projectId}/handover-documents`, {
     method: "POST",
     body: data
   });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
   modal.remove();
-  loadHandover(state.selectedPerson);
+  document.querySelector(".handover-modal-backdrop")?.remove();
+  await loadHandover(state.selectedPerson);
+  const refreshedProject = state.handover?.projects?.find((item) => String(item.projectId) === String(projectId));
+  if (refreshedProject) {
+    openDetailModal(refreshedProject);
+  }
 }
 
 async function deleteDocument(projectId, documentId) {

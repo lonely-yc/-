@@ -60,9 +60,27 @@ function openToolboxPage() {
   if (title) title.textContent = "工具箱";
   if (crumb) crumb.textContent = "系统概览 > 工具箱";
   const content = document.querySelector(".fig-content");
-  if (!content) return;
-  content.innerHTML = renderToolbox();
+  const main = document.querySelector(".fig-main");
+  if (!content || !main) return;
+  content.style.display = "none";
+  let host = document.querySelector(".toolbox-host");
+  if (!host) {
+    host = document.createElement("main");
+    host.className = "fig-content toolbox-host";
+    main.appendChild(host);
+  }
+  host.innerHTML = renderToolbox();
+  host.style.display = "";
   bindToolboxEvents();
+}
+
+function closeToolboxPage() {
+  stopQrPlayback();
+  stopScanner();
+  const host = document.querySelector(".toolbox-host");
+  if (host) host.remove();
+  const content = document.querySelector(".fig-content:not(.toolbox-host)");
+  if (content) content.style.display = "";
 }
 
 function renderToolbox() {
@@ -180,7 +198,8 @@ function bindToolboxEvents() {
       stopQrPlayback();
       stopScanner();
       TOOLBOX_STATE.activeTab = button.dataset.toolboxTab;
-      document.querySelector(".fig-content").innerHTML = renderToolbox();
+      const host = document.querySelector(".toolbox-host");
+      if (host) host.innerHTML = renderToolbox();
       bindToolboxEvents();
     });
   });
@@ -500,6 +519,12 @@ function loadQrLibrary() {
 function bootToolbox() {
   ensureToolboxNav();
   loadQrLibrary();
+  document.addEventListener("click", (event) => {
+    const navItem = event.target.closest(".fig-nav-item");
+    if (navItem && !navItem.matches("[data-toolbox-nav]")) {
+      closeToolboxPage();
+    }
+  }, true);
 }
 
 bootToolbox();
